@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Fishery - Sistem Informasi Pemasaran & Pemesanan Hasil Perikanan Kab. Tanggamus</title>
+  
+  <!-- Favicon and Fonts -->
+  <link rel="icon" type="image/png" href="logo/Lambang_Kabupaten_Tanggamus.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet conforming to PRD v1.0 & Design Prompt v2 -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Security Meta Headers (Hardening & Protection - OWASP A05) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       DEMO SIMULATOR BAR (Mempermudah Dosen / Penguji / Pengguna Menguji Semua Peran PRD)
+       ========================================================================== -->
+  <div class="demo-role-bar">
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <span class="badge-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+        Simulator Peran PRD (UTS 2026)
+      </span>
+      <span style="font-size: 0.775rem; color: #94a3b8;">Ganti peran dengan satu klik untuk menguji hak akses:</span>
+    </div>
+
+    <div class="role-buttons-group">
+      <button class="btn-role active" data-role="visitor" onclick="switchRole('visitor')">
+        👁️ Pengunjung
+      </button>
+      <button class="btn-role" data-role="buyer" onclick="switchRole('buyer')">
+        🛒 Pembeli (Budi Santoso)
+      </button>
+      <button class="btn-role" data-role="seller" onclick="switchRole('seller')">
+        ⚓ Penjual Terverifikasi (Toko Bahari)
+      </button>
+      <button class="btn-role" data-role="seller_pending" onclick="switchRole('seller_pending')">
+        ⏳ Penjual Baru (Menunggu Verifikasi)
+      </button>
+      <button class="btn-role" data-role="admin" onclick="switchRole('admin')">
+        🏛️ Admin Pemda (Rifki Banda)
+      </button>
+      <button class="btn-role" style="border-color: #ef4444; color: #fca5a5;" onclick="resetDemoData()" title="Kembalikan data ke awal">
+        🔄 Reset Data
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       SITE HEADER (MANDATORY DUAL LOGOS & IDENTITAS APLIKASI)
+       PRD FR-18 & Design Prompt v2 Seksi 3
+       ========================================================================== -->
+  <header class="site-header">
+    <!-- Top Announcement Strip -->
+    <div class="header-top">
+      <div class="container">
+        <div>
+          📍 Wilayah Pemasaran: <strong>Kabupaten Tanggamus, Lampung</strong> (Kota Agung, Teluk Semaka, Gisting, Limau, Cukuh Balak)
+        </div>
+        <div>
+          Status MVP: <strong>Katalog & Pemesanan Hasil Perikanan (Rust + PostgreSQL)</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header Bar -->
+    <div class="header-main">
+      <div class="container">
+        <!-- Dual Official Logos & Title Group -->
+        <a href="javascript:void(0)" onclick="navigateTo('home')" class="branding-group">
+          <div class="official-logos">
+            <!-- 1. Logo Resmi Pemkab Tanggamus -->
+            <div class="logo-box" title="Logo Resmi Pemerintah Kabupaten Tanggamus (Perda No. 2 Th 1997)">
+              <img src="logo/Lambang_Kabupaten_Tanggamus.png" alt="Logo Pemda Kabupaten Tanggamus">
+            </div>
+            <!-- 2. Logo Resmi Universitas Teknokrat Indonesia -->
+            <div class="logo-box" title="Logo Resmi Universitas Teknokrat Indonesia">
+              <img src="logo/download (3).png" alt="Logo Universitas Teknokrat Indonesia">
+            </div>
+          </div>
+          <div class="branding-title">
+            <div class="brand-name">
+              SMART <span>FISHERY</span>
+            </div>
+            <div class="brand-sub">
+              Sistem Informasi Pemasaran & Pemesanan Hasil Perikanan Kab. Tanggamus
+            </div>
+          </div>
+        </a>
+
+        <!-- Global Product Search Bar -->
+        <div class="header-search">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="catalog-search-input" placeholder="Cari ikan tongkol, kerapu, udang, cumi..." onkeyup="if(event.key === 'Enter') { navigateTo('catalog'); }" oninput="if(window.appState && window.appState.currentView === 'catalog') { render(); }">
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="header-nav">
+          <a href="javascript:void(0)" class="nav-link" onclick="navigateTo('home')">
+            Beranda
+          </a>
+          <a href="javascript:void(0)" class="nav-link" onclick="navigateTo('catalog')">
+            Katalog Produk
+          </a>
+        </nav>
+
+        <!-- Right Header Actions (Cart, Role Dashboards, Profile) -->
+        <div class="header-actions">
+          <!-- Cart Button with Dynamic Badge -->
+          <button class="cart-trigger-btn" onclick="navigateTo('cart')" title="Keranjang Belanja">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <span class="cart-badge" id="global-cart-badge">0</span>
+          </button>
+
+          <!-- Dynamic Role Pill / Login Button -->
+          <div id="header-user-widget">
+            <button class="btn btn-primary btn-sm" onclick="navigateTo('login')">
+              Masuk / Daftar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN CONTENT MOUNTING POINT (DYNAMIC ROUTER)
+       ========================================================================== -->
+  <main class="main-wrapper" id="app-root">
+    <!-- Dynamic views will render here via js/app.js -->
+  </main>
+
+  <!-- Modal Container for Dialogs -->
+  <div id="modal-container"></div>
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container"></div>
+
+  <!-- ==========================================================================
+       MANDATORY FOOTER (STRICT REQUIREMENT FR-19 & Seksi 4 Design Prompt)
+       Teks WAJIB:
+       Copyright©2026 by Rifki Banda Wijaya dan Dr. Erliyan Redy Susanto, M.Kom
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <!-- Branding & Mandatory Logos -->
+        <div class="footer-branding">
+          <div class="footer-logos">
+            <div class="footer-logo-box" title="Logo Resmi Pemerintah Kabupaten Tanggamus">
+              <img src="logo/Lambang_Kabupaten_Tanggamus.png" alt="Pemerintah Kabupaten Tanggamus">
+            </div>
+            <div class="footer-logo-box" title="Logo Resmi Universitas Teknokrat Indonesia">
+              <img src="logo/download (3).png" alt="Universitas Teknokrat Indonesia">
+            </div>
+            <div class="footer-brand-title">
+              <h4>SMART FISHERY TANGGAMUS</h4>
+              <p>Kolaborasi Riset Sistem Informasi & Pemerintah Daerah</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Aplikasi web responsif untuk mempertemukan penjual hasil perikanan (nelayan tradisional & pelaku usaha pesisir) dengan masyarakat pembeli di Kabupaten Tanggamus. Dirancang sebagai prototipe digitalisasi perikanan berbasis arsitektur modern Rust dan PostgreSQL.
+          </p>
+        </div>
+
+        <!-- Links Peran & Layanan -->
+        <div class="footer-col">
+          <h5>Akses & Peran Sistem</h5>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="navigateTo('catalog')">Katalog Ikan Segar</a></li>
+            <li><a href="javascript:void(0)" onclick="switchRole('buyer')">Dashboard Pembeli</a></li>
+            <li><a href="javascript:void(0)" onclick="switchRole('seller')">Dashboard Nelayan / Penjual</a></li>
+            <li><a href="javascript:void(0)" onclick="switchRole('admin')">Dashboard Pengawasan Admin</a></li>
+          </ul>
+        </div>
+
+        <!-- Official Sources -->
+        <div class="footer-col">
+          <h5>Tautan Resmi</h5>
+          <ul class="footer-links">
+            <li><a href="https://tanggamus.go.id" target="_blank" rel="noopener">Pemerintah Kab. Tanggamus</a></li>
+            <li><a href="https://teknokrat.ac.id" target="_blank" rel="noopener">Universitas Teknokrat Indonesia</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('home')">Tentang Program Smart Fishery</a></li>
+            <li><a href="javascript:void(0)" onclick="navigateTo('403')">Halaman 403 (Uji Hak Akses)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MANDATORY EXACT FOOTER TEXT BAR (STRICT COMPLIANCE FR-19) -->
+      <div class="footer-bottom-exact">
+        <div class="exact-copyright-text">
+          Copyright©2026 by Rifki Banda Wijaya dan Dr. Erliyan Redy Susanto, M.Kom
+        </div>
+        <div class="footer-sub-text">
+          Dokumen Kebutuhan Produk (PRD v1.0) & Desain Antarmuka UI/UX v2 — Program Studi Sistem Informasi, Universitas Teknokrat Indonesia.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:p>
+    <w:pPr>
+      <w:pBdr>
+        <w:top w:val="single" w:sz="6" w:space="4" w:color="CBD5E1"/>
+      </w:pBdr>
+      <w:jc w:val="both"/>
+    </w:pPr>
+    <w:r>
+      <w:rPr>
+        <w:sz w:val="16"/>
+        <w:color w:val="64748B"/>
+      </w:rPr>
+      <w:t>Copyright©2026 by Rifki Banda Wijaya dan Dr. Erliyan Redy Susanto, M.Kom</w:t>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:sz w:val="16"/>
+        <w:color w:val="64748B"/>
+      </w:rPr>
+      <w:tab/>
+      <w:t>Halaman </w:t>
+    </w:r>
+    <w:fldSimple w:instr="PAGE"/>
+    <w:r>
+      <w:rPr>
+        <w:sz w:val="16"/>
+        <w:color w:val="64748B"/>
+      </w:rPr>
+      <w:t> dari </w:t>
+    </w:r>
+    <w:fldSimple w:instr="NUMPAGES"/>
+  </w:p>
+</w:ftr>
